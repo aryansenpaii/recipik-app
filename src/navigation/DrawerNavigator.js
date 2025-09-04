@@ -4,7 +4,9 @@ import {
   DrawerContentScrollView,
   DrawerItem
 } from '@react-navigation/drawer';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet ,TouchableOpacity
+  
+} from 'react-native';
 import AppStack from './AppStack'; // your stack navigator
 import { AuthContext } from '../context/AuthContext';
 
@@ -25,13 +27,16 @@ function CustomDrawerContent(props) {
         />
         <Text style={styles.profileName}>{user?.name || 'User'}</Text>
       </View>
-      <DrawerItem
-        label="Logout"
+      <TouchableOpacity
+        className="bg-[#ff5454] rounded-lg w-90 h-14 mx-5 my-8 p-3"
         onPress={() => {
           signOut();
           props.navigation.closeDrawer();
         }}
-      />
+      >
+        <Text className="font-bold text-2xl text-white text-center">Logout</Text>
+      </TouchableOpacity>
+
     </DrawerContentScrollView>
   );
 }
