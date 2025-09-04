@@ -7,47 +7,54 @@ import {
 } from "react-native-responsive-screen";
 import { BellIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline";
 import Categories from "../components/Categories";
-import axios from 'axios';
-import Recipes from "../components/Recipes"
+import axios from "axios";
+import Recipes from "../components/Recipes";
+import { TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function HomeScreen() {
-  const [activeCategory,setActiveCategory]=useState('Beef');
-  const[categories,setCategories] = useState([]);
-  const [meals, setMeals]= useState([]);
-  useEffect(()=>{
+  const [activeCategory, setActiveCategory] = useState("Beef");
+  const [categories, setCategories] = useState([]);
+  const [meals, setMeals] = useState([]);
+  const navigation = useNavigation();
+  useEffect(() => {
     getCategories();
-    getRecipes()
-  },[])
+    getRecipes();
+  }, []);
 
-  const handleChangeCategory= category=>{
+  const handleChangeCategory = (category) => {
     getRecipes(category);
     setActiveCategory(category);
     setMeals([]);
-  }
+  };
 
-  const getCategories= async ()=>{
-    try{
-      const response = await axios.get("https://themealdb.com/api/json/v1/1/categories.php");
+  const getCategories = async () => {
+    try {
+      const response = await axios.get(
+        "https://themealdb.com/api/json/v1/1/categories.php"
+      );
       // console.log("got categories: ",response.data);
-      if(response && response.data){
+      if (response && response.data) {
         setCategories(response.data.categories);
       }
-    }catch(err){
-      console.log('error',err.message)
+    } catch (err) {
+      console.log("error", err.message);
     }
-  }
+  };
 
-  const getRecipes= async (category="Beef")=>{
-    try{
-      const response = await axios.get(`https://themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+  const getRecipes = async (category = "Beef") => {
+    try {
+      const response = await axios.get(
+        `https://themealdb.com/api/json/v1/1/filter.php?c=${category}`
+      );
       // console.log("got recipes: ",response.data);
-      if(response && response.data){
+      if (response && response.data) {
         setMeals(response.data.meals);
       }
-    }catch(err){
-      console.log('error',err.message)
+    } catch (err) {
+      console.log("error", err.message);
     }
-  }
+  };
 
   return (
     <View className="flex-1 bg-white">
@@ -58,13 +65,15 @@ export default function HomeScreen() {
         className="space-y-6 pt-14"
       >
         {/* avatar and bell icon */}
-        <View className="mx-4 flex-row justify-between items-center mb-4">
+        <TouchableOpacity
+          onPress={() => navigation.openDrawer()}
+          style={{ margin: 15 }}
+        >
           <Image
-            source={require("../../assets/images/avatar.png")}
-            style={{ height: hp(5), width: hp(5.5) }}
+            source={{ uri: "https://i.pravatar.cc/150" }} // Or your user's profile photo URI
+            style={{ width: 40, height: 40, borderRadius: 20 }}
           />
-          <BellIcon size={hp(4)} color="gray" />
-        </View>
+        </TouchableOpacity>
 
         {/* greetings and punchline */}
         <View className="mx-4 space-y-2 mb-5">
@@ -100,13 +109,19 @@ export default function HomeScreen() {
         </View>
         {/* Categories Section*/}
         <View>
-          {console.log("categories-length:"+categories.length)}
-          {categories.length>0 && <Categories categories={categories} activeCategory={activeCategory} handleChangeCategory={handleChangeCategory} />}
+          {console.log("categories-length:" + categories.length)}
+          {categories.length > 0 && (
+            <Categories
+              categories={categories}
+              activeCategory={activeCategory}
+              handleChangeCategory={handleChangeCategory}
+            />
+          )}
         </View>
 
         {/* Recipes */}
         <View>
-          <Recipes meals={meals} categories={categories}/>
+          <Recipes meals={meals} categories={categories} />
         </View>
       </ScrollView>
     </View>

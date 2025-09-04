@@ -1,4 +1,4 @@
- import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -15,10 +15,10 @@ import {
 import { HeartIcon } from "react-native-heroicons/solid";
 import CachedImage from "../helpers/image";
 import { useNavigation } from "@react-navigation/native";
-import YouTubeIFrame from 'react-native-youtube-iframe';
+import YouTubeIFrame from "react-native-youtube-iframe";
 import axios from "axios";
 import Loading from "../components/Loading";
-import Animated,{FadeIn, FadeInDown} from "react-native-reanimated";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 
 const RecipeDetailScreen = (props) => {
   let item = props.route.params;
@@ -57,14 +57,14 @@ const RecipeDetailScreen = (props) => {
     return indexes;
   };
 
-  const getYoutubeVideoId= url=>{
-    const regex= /[?&]v=([^&]+)/;
-    const match= url.match(regex);
-    if(match && match[1]){
+  const getYoutubeVideoId = (url) => {
+    const regex = /[?&]v=([^&]+)/;
+    const match = url.match(regex);
+    if (match && match[1]) {
       return match[1];
     }
     return null;
-  }
+  };
 
   return (
     <ScrollView
@@ -90,17 +90,26 @@ const RecipeDetailScreen = (props) => {
             borderBottomRightRadius: 40,
             marginTop: 50,
           }}
-          
         />
       </View>
       {/* back button */}
-      <Animated.View entering={FadeIn.delay(200).duration(1000)} className="w-full absolute flex-row justify-between items-center mt-5 pt-14 ">
+      <Animated.View
+        entering={FadeIn.delay(200).duration(1000)}
+        className="w-full absolute flex-row justify-between items-center mt-5 pt-14 "
+      >
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          className="p-3 rounded-full ml-6  bg-white"
+          onPress={() => {
+            if (navigation.canGoBack()) {
+              navigation.goBack();
+            } else {
+              navigation.navigate("Home");
+            }
+          }}
+          className="p-3 rounded-full ml-6 bg-white"
         >
           <ChevronLeftIcon size={hp(3.5)} strokeWidth={4.5} color="#fbbf24" />
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => setIsFavourite(!isFavourite)}
           className="p-3 rounded-full mr-6 bg-white"
@@ -119,7 +128,10 @@ const RecipeDetailScreen = (props) => {
       ) : (
         <View className="px-4 flex justify-between space-y-4 pt-8">
           {/* name and area */}
-          <Animated.View entering={FadeInDown.duration(700).springify().damping(12)} className="space-y-2">
+          <Animated.View
+            entering={FadeInDown.duration(700).springify().damping(12)}
+            className="space-y-2"
+          >
             <Text
               style={{ fontSize: hp(3) }}
               className="font-bold flex-1 text-neutral-700"
@@ -135,7 +147,13 @@ const RecipeDetailScreen = (props) => {
           </Animated.View>
 
           {/* misc */}
-          <Animated.View entering={FadeInDown.delay(100).duration(700).springify().damping(12)} className="flex-row justify-around px-6">
+          <Animated.View
+            entering={FadeInDown.delay(100)
+              .duration(700)
+              .springify()
+              .damping(12)}
+            className="flex-row justify-around px-6"
+          >
             <View className="flex rounded-full bg-amber-300 p-2">
               <View
                 style={{ height: hp(6.5), width: hp(6.5) }}
@@ -229,7 +247,13 @@ const RecipeDetailScreen = (props) => {
           </Animated.View>
 
           {/* Ingredients */}
-          <Animated.View entering={FadeInDown.delay(200).duration(700).springify().damping(12)} className="space-y-4">
+          <Animated.View
+            entering={FadeInDown.delay(200)
+              .duration(700)
+              .springify()
+              .damping(12)}
+            className="space-y-4"
+          >
             <Text
               style={{ fontSize: hp(2.5) }}
               className="font-bold flex-1 text-neutral-700"
@@ -266,34 +290,47 @@ const RecipeDetailScreen = (props) => {
           </Animated.View>
 
           {/*  instructions */}
-              <Animated.View entering={FadeInDown.delay(300).duration(700).springify().damping(12)} className="space-y-4">
-                <Text style={{fontSize: hp(2.5)}} className="font-bold flex-1 text-neutral-700">
-                  Instructions
-                </Text>
-                <Text style={{fontSize:hp(1.6)}} className="text-neutral-700">
-                  {
-                    meal?.strInstructions
-                  }
-                </Text>
-              </Animated.View>
+          <Animated.View
+            entering={FadeInDown.delay(300)
+              .duration(700)
+              .springify()
+              .damping(12)}
+            className="space-y-4"
+          >
+            <Text
+              style={{ fontSize: hp(2.5) }}
+              className="font-bold flex-1 text-neutral-700"
+            >
+              Instructions
+            </Text>
+            <Text style={{ fontSize: hp(1.6) }} className="text-neutral-700">
+              {meal?.strInstructions}
+            </Text>
+          </Animated.View>
 
-              {/* Recipe Video */}
-              {
-                meal.strYoutube &&(
-                  <Animated.View entering={FadeInDown.delay(400).duration(700).springify().damping(12)} className="space-y-4">
-                    <Text style={{fontSize:hp(2.5)}} className="font-bold flex-1 text-neutral-700">
-                      Recipe Video
-                    </Text>
-                    <View>
-                        <YouTubeIFrame 
-                          videoId={getYoutubeVideoId(meal.strYoutube)}
-                          height={hp(30)}
-
-                        />
-                    </View>
-                  </Animated.View>
-                )
-              }
+          {/* Recipe Video */}
+          {meal.strYoutube && (
+            <Animated.View
+              entering={FadeInDown.delay(400)
+                .duration(700)
+                .springify()
+                .damping(12)}
+              className="space-y-4"
+            >
+              <Text
+                style={{ fontSize: hp(2.5) }}
+                className="font-bold flex-1 text-neutral-700"
+              >
+                Recipe Video
+              </Text>
+              <View>
+                <YouTubeIFrame
+                  videoId={getYoutubeVideoId(meal.strYoutube)}
+                  height={hp(30)}
+                />
+              </View>
+            </Animated.View>
+          )}
         </View>
       )}
     </ScrollView>
