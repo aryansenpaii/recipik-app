@@ -11,7 +11,7 @@ import { AuthContext } from '../context/AuthContext';
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
-  const { signOut } = useContext(AuthContext);
+  const { signOut ,user} = useContext(AuthContext);
 
   return (
     <DrawerContentScrollView
@@ -20,10 +20,10 @@ function CustomDrawerContent(props) {
     >
       <View style={styles.profileContainer}>
         <Image
-          source={{ uri: 'https://i.pravatar.cc/150' }}
+          source={{ uri: user?.photoURL || 'https://i.pravatar.cc/150' }}
           style={styles.profileImage}
         />
-        <Text style={styles.profileName}>Aryan Senpai</Text>
+        <Text style={styles.profileName}>{user?.name || 'User'}</Text>
       </View>
       <DrawerItem
         label="Logout"

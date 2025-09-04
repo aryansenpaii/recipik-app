@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
 import {
   widthPercentageToDP as wp,
@@ -9,6 +9,7 @@ import Animated,{FadeInDown} from "react-native-reanimated";
 import Loading from "./Loading";
 import { useNavigation } from "@react-navigation/native";
 import CachedImage from "../helpers/image";
+import { Image } from "expo-image";
 
 
 
@@ -50,8 +51,8 @@ const RecipeCard = ({item,index,navigation})=>{
            <Pressable style={{width:'100%', paddinLeft: isEven?0:8, paddingRight: isEven?8:0}} className="flex justify-center mb-4 space-y-1" onPress={()=> navigation.navigate('RecipeDetail', {...item})}>
             
             {/* <Image source={{uri: item.strMealThumb}} style={{width:'100%',height:index%3==0 ? hp(25):hp(35),borderRadius:35}} className="bg-black/5"  /> */}
-            <CachedImage 
-                uri= {item.strMealThumb} style={{width:'100%',height:index%3==0 ? hp(25):hp(35),borderRadius:35}} className="bg-black/5"
+            <Image 
+                source={{ uri: item.strMealThumb }} style={{width:'100%',height:index%3==0 ? hp(25):hp(35),borderRadius:35}} className="bg-black/5"
                 sharedTransitionTag={item.strMeal}
             />
             <Text style={{fontSize: hp(1.5)}} className="font-semibold ml-2 text-neutral-600">

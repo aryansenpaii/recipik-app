@@ -11,7 +11,7 @@ export default function LoginScreen({ navigation }) {
   const onSubmit = async (data) => {
     try {
       const result = await login(data.email, data.password);
-      await signIn(result.token);
+      await signIn({ token: result.token, user: result.user });
     } catch (error) {
       Alert.alert('Login failed', error.response?.data?.message || error.message);
     }

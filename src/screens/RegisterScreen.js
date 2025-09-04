@@ -12,7 +12,7 @@ export default function RegisterScreen({ navigation }) {
   const onSubmit = async (data) => {
     try {
       const result = await register(data.name, data.email, data.password);
-      await signIn(result.token);
+      await signIn({ token: result.token, user: result.user });
     } catch (error) {
       Alert.alert('Registration failed', error.response?.data?.message || error.message);
     }

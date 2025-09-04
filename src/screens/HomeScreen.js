@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, TextInput } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   widthPercentageToDP as wp,
@@ -11,12 +11,14 @@ import axios from "axios";
 import Recipes from "../components/Recipes";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../context/AuthContext";
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState("Beef");
   const [categories, setCategories] = useState([]);
   const [meals, setMeals] = useState([]);
   const navigation = useNavigation();
+  const {user} = useContext(AuthContext);
   useEffect(() => {
     getCategories();
     getRecipes();
@@ -70,7 +72,7 @@ export default function HomeScreen() {
           style={{ margin: 15 }}
         >
           <Image
-            source={{ uri: "https://i.pravatar.cc/150" }} // Or your user's profile photo URI
+            source={{ uri: user?.photoURL || 'https://i.pravatar.cc/150' }}
             style={{ width: 40, height: 40, borderRadius: 20 }}
           />
         </TouchableOpacity>
@@ -78,7 +80,7 @@ export default function HomeScreen() {
         {/* greetings and punchline */}
         <View className="mx-4 space-y-2 mb-5">
           <Text style={{ fontSize: hp(1.8) }} className="text-neutral-600">
-            Hello, Aryan!
+            Hello, {user?.name || 'Guest'}!
           </Text>
           <View>
             <Text
