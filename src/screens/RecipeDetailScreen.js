@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   widthPercentageToDP as wp,
@@ -19,6 +19,8 @@ import YouTubeIFrame from "react-native-youtube-iframe";
 import axios from "axios";
 import Loading from "../components/Loading";
 import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
+import { addFavourite, removeFavourite } from "../services/authApi";
+import { AuthContext } from "../context/AuthContext";
 
 const RecipeDetailScreen = (props) => {
   let item = props.route.params;
@@ -26,10 +28,49 @@ const RecipeDetailScreen = (props) => {
   const navigation = useNavigation();
   const [meal, setMeal] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { user, userToken, setUser } = useContext(AuthContext);
+  const recipeId = item.idMeal; // from route params
+
+  useEffect(() => {
+    if (user?.favourites) {
+      
+      setIsFavourite(user.favourites.includes(recipeId));
+    }
+  }, [user, recipeId]);
 
   useEffect(() => {
     getMealData(item.idMeal);
   }, []);
+
+  const toggleFavourite = async () => {
+    if (!userToken) {
+      // Prompt login or early return
+      return;
+    }
+
+    try {
+      if (isFavourite) {
+        await removeFavourite(userToken, recipeId);
+        setIsFavourite(false);
+        setUser((prevUser) => ({
+          ...(prevUser || {}), // fallback to empty object if prevUser is null
+          favourites: (prevUser?.favourites || []).filter(
+            (id) => id !== recipeId
+          ),
+        }));
+      } else {
+        await addFavourite(userToken, recipeId);
+        console.log("added succesfully!");
+        setIsFavourite(true);
+        setUser((prevUser) => ({
+          ...(prevUser || {}),
+          favourites: [...(prevUser?.favourites || []), recipeId],
+        }));
+      }
+    } catch (error) {
+      console.error("Error toggling favourite:", error);
+    }
+  };
 
   const getMealData = async (id) => {
     try {
@@ -111,7 +152,7 @@ const RecipeDetailScreen = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => setIsFavourite(!isFavourite)}
+          onPress={toggleFavourite}
           className="p-3 rounded-full mr-6 bg-white"
         >
           <HeartIcon
