@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   widthPercentageToDP as wp,
@@ -14,7 +14,7 @@ import {
 } from "react-native-heroicons/outline";
 import { HeartIcon } from "react-native-heroicons/solid";
 import CachedImage from "../helpers/image";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import YouTubeIFrame from "react-native-youtube-iframe";
 import axios from "axios";
 import Loading from "../components/Loading";
@@ -31,16 +31,18 @@ const RecipeDetailScreen = (props) => {
   const { user, userToken, setUser } = useContext(AuthContext);
   const recipeId = item.idMeal; // from route params
 
-  useEffect(() => {
-    if (user?.favourites) {
-      
-      setIsFavourite(user.favourites.includes(recipeId));
-    }
-  }, [user, recipeId]);
+  useFocusEffect(
+    useCallback(() => {
+      console.log("User favourites:", user);
+      getMealData(item.idMeal);
 
-  useEffect(() => {
-    getMealData(item.idMeal);
-  }, []);
+      if (user?.favourites) {
+        setIsFavourite(user.favourites.includes(recipeId));
+      } else {
+        setIsFavourite(false);
+      }
+    }, [item.idMeal, user, recipeId])
+  );
 
   const toggleFavourite = async () => {
     if (!userToken) {
