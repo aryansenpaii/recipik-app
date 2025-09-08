@@ -31,7 +31,7 @@ export const getFavourites = async (token) => {
   const res = await axios.get(FAVOURITES_URL, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return res.data.favourites;
+  return res.data;
 };
 
 export const addFavourite = async (token, recipeId) => {

@@ -8,6 +8,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import AppStack from "./AppStack"; // your stack navigator
 import { AuthContext } from "../context/AuthContext";
 import EditProfileScreen from "../screens/EditProfileScreen";
+import FavouritesScreen from "../screens/FavouritesScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -17,7 +18,7 @@ function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView
       {...props}
-      contentContainerStyle={{ flex: 1, justifyContent: "space-between" }}
+      contentContainerStyle={{ flex: 1 }}
     >
       <View style={styles.profileContainer}>
         <Image
@@ -34,8 +35,15 @@ function CustomDrawerContent(props) {
           </Text>
         </TouchableOpacity>
       </View>
+      <View>
+        <DrawerItem
+          label="Favourites"
+          onPress={() => props.navigation.navigate("Favourites")}
+        />
+      </View>
+
       <TouchableOpacity
-        className="bg-[#ff5454] rounded-lg w-90 h-14 mx-5 my-8 p-3"
+        className="bg-[#ff5454] rounded-lg w-90 h-14 mx-5 mt-8 p-3"
         onPress={() => {
           signOut();
           props.navigation.closeDrawer();
@@ -60,12 +68,13 @@ export default function DrawerNavigator() {
         component={AppStack}
         options={{ title: "Home" }}
       />
+      <Drawer.Screen name="Favourites" component={FavouritesScreen} />
       <Drawer.Screen
         name="EditProfile"
         component={EditProfileScreen}
         options={{ title: "Edit Profile" }}
       />
-      {/* Add other drawer screens if needed */}
+      {/* we can Add other drawer screens if needed */}
     </Drawer.Navigator>
   );
 }
