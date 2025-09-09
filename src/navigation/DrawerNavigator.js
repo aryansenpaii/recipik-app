@@ -38,7 +38,8 @@ function CustomDrawerContent(props) {
       <View>
         <DrawerItem
           label="Favourites"
-          onPress={() => props.navigation.navigate("Favourites")}
+          onPress={() => props.navigation.navigate("AppStack", { screen: "Favourites" })}
+
         />
       </View>
 
@@ -68,12 +69,12 @@ export default function DrawerNavigator() {
         component={AppStack}
         options={{ title: "Home" }}
       />
-      <Drawer.Screen name="Favourites" component={FavouritesScreen} />
+     {/* <Drawer.Screen name="Favourites" component={FavouritesScreen} /> */}
       <Drawer.Screen
         name="EditProfile"
         component={EditProfileScreen}
         options={{ title: "Edit Profile" }}
-      />
+      /> 
       {/* we can Add other drawer screens if needed */}
     </Drawer.Navigator>
   );

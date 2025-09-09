@@ -6,6 +6,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import HomeScreen from '../screens/HomeScreen';
 import RecipeDetailScreen from '../screens/RecipeDetailScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import FavouritesScreen from '../screens/FavouritesScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,8 +15,10 @@ export default function AppStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Favourites" component={FavouritesScreen} />
       <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
       <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+      
     </Stack.Navigator>
   );
 }

@@ -30,7 +30,7 @@ const Favourites = ({ meals }) => {
         onPress={() =>
           navigation.navigate("AppStack", {
             screen: "RecipeDetail",
-            params: {...item },
+            params: { ...item, fromFavourites: true },
           })
         }
       >
