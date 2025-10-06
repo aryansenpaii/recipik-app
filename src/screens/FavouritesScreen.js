@@ -35,7 +35,7 @@ const FavouritesScreen = () => {
         setLoading(true);
         fetchFavouriteRecipes();
       }
-      // Optional: cleanup on blur if needed
+      
       return () => {};
     }, [userToken])
   );

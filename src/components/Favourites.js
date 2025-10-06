@@ -1,5 +1,5 @@
 import React from "react";
-
+import { ChevronLeftIcon } from "react-native-heroicons/outline";
 import {
   View,
   Text,
@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 
 import CachedImage from "../helpers/image";
@@ -46,6 +49,19 @@ const Favourites = ({ meals }) => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => {
+          if (navigation.canGoBack()) {
+            navigation.goBack();
+          } else {
+            navigation.navigate("Home");
+          }
+        }}
+        className="p-0 rounded-full ml-0 mb-2 bg-slate-500 w-10 h-10 bg-white"
+      >
+        <ChevronLeftIcon size={hp(3.5)} strokeWidth={4.5} color="#fbbf24" />
+      </TouchableOpacity>
+
       <Text style={styles.screenTitle}>Favourites</Text>
       <FlatList
         data={meals}

@@ -16,10 +16,7 @@ function CustomDrawerContent(props) {
   const { signOut, user } = useContext(AuthContext);
 
   return (
-    <DrawerContentScrollView
-      {...props}
-      contentContainerStyle={{ flex: 1 }}
-    >
+    <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
       <View style={styles.profileContainer}>
         <Image
           source={{ uri: user?.photoURL || "https://i.pravatar.cc/150" }}
@@ -38,8 +35,9 @@ function CustomDrawerContent(props) {
       <View>
         <DrawerItem
           label="Favourites"
-          onPress={() => props.navigation.navigate("AppStack", { screen: "Favourites" })}
-
+          onPress={() =>
+            props.navigation.navigate("AppStack", { screen: "Favourites" })
+          }
         />
       </View>
 
@@ -69,12 +67,12 @@ export default function DrawerNavigator() {
         component={AppStack}
         options={{ title: "Home" }}
       />
-     {/* <Drawer.Screen name="Favourites" component={FavouritesScreen} /> */}
+      {/* <Drawer.Screen name="Favourites" component={FavouritesScreen} /> */}
       <Drawer.Screen
         name="EditProfile"
         component={EditProfileScreen}
         options={{ title: "Edit Profile" }}
-      /> 
+      />
       {/* we can Add other drawer screens if needed */}
     </Drawer.Navigator>
   );
