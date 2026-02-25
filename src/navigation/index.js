@@ -52,7 +52,10 @@ export default function AppNavigation() {
   return (
     <AuthProvider>
       <NavigationContainer>
+        
+        {/* DECIDES WHICH SCREEN TO SHOW LOGIN OR SESSION EXPIRED OR MAIN APP(DRAWER_NAVIGATOR) */}
         <Routes />
+
       </NavigationContainer>
     </AuthProvider>
   );

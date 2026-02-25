@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
         const token = await SecureStore.getItemAsync('userToken');
         if (token) {
           const res = await axios.get(`${API_URL}/me`, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token}` },//TOKEN FOR VERFICATION
           });
           setUserToken(token);
           setUser(res.data);
