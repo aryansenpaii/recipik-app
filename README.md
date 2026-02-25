@@ -27,7 +27,6 @@ Recipik is a mobile recipe discovery and sharing application built using **React
 
 ## 📱 Screenshots
 
-```md
 ![Splash Screen](screenshots/splash.jpg)
 ![Login Screen](screenshots/login.jpg)
 ![Home Screen](screenshots/home.jpg)
